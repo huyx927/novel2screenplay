@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import os
+
+from dotenv import load_dotenv
 import streamlit as st
 
 from novel2screenplay.chapter_splitter import split_chapters
 from novel2screenplay.converter import convert_novel_text
 
+
+load_dotenv()
 
 SAMPLE_TEXT = """
 第1章 雨夜来信
@@ -29,7 +34,35 @@ if "generated_yaml" not in st.session_state:
 with st.sidebar:
     st.header("项目设置")
     project_title = st.text_input("项目标题", value="雾城来信")
-    st.caption("当前阶段使用演示模式，不调用 AI。")
+
+    st.header("生成模式")
+    use_demo = st.checkbox("演示模式：不调用第三方 API", value=True)
+
+    base_url = st.text_input(
+        "第三方 API Base URL",
+        value=os.getenv("OPENAI_BASE_URL", ""),
+        disabled=use_demo,
+    )
+
+    model = st.text_input(
+        "模型名",
+        value=os.getenv("OPENAI_MODEL", ""),
+        disabled=use_demo,
+    )
+
+    max_chars = st.slider(
+        "AI 模式：每章最多发送字符数",
+        min_value=800,
+        max_value=8000,
+        value=3500,
+        step=100,
+        disabled=use_demo,
+    )
+
+    if use_demo:
+        st.caption("当前使用演示模式，不需要 API Key。")
+    else:
+        st.caption("当前使用 AI 模式，需要本地 .env 中配置 OPENAI_API_KEY。")
 
 novel_text = st.text_area(
     "请粘贴小说文本",
@@ -45,7 +78,7 @@ st.info(f"当前识别到 {len(chapters)} 个章节。题目要求至少 3 个�
 if len(chapters) < 3:
     st.warning("章节数量不足。请至少输入 3 个章节。")
 else:
-    st.success("章节数量符合要求，可以生成演示剧本 YAML。")
+    st.success("章节数量符合要求，可以生成剧本 YAML。")
 
 for chapter in chapters:
     with st.expander(f"{chapter.number}. {chapter.title}"):
@@ -56,17 +89,26 @@ st.divider()
 
 st.subheader("生成剧本 YAML")
 
-if st.button("生成演示剧本 YAML", type="primary"):
+button_label = "生成演示剧本 YAML" if use_demo else "生成 AI 剧本 YAML"
+
+if st.button(button_label, type="primary"):
     try:
-        result = convert_novel_text(
-            text=novel_text,
-            title=project_title,
-            mode="demo",
-        )
+        mode = "demo" if use_demo else "ai"
+
+        with st.spinner("正在生成剧本 YAML，请稍候..."):
+            result = convert_novel_text(
+                text=novel_text,
+                title=project_title,
+                mode=mode,
+                model=model,
+                base_url=base_url,
+                max_chars_per_chapter=max_chars,
+            )
 
         st.session_state.generated_yaml = result.yaml_text
-        st.success("演示剧本 YAML 生成成功。")
-        st.caption(f"已识别章节数：{len(result.chapters)}")
+
+        st.success("剧本 YAML 生成成功。")
+        st.caption(f"已识别章节数：{len(result.chapters)}，生成模式：{result.mode}")
 
     except Exception as exc:
         st.session_state.generated_yaml = None
@@ -75,9 +117,11 @@ if st.button("生成演示剧本 YAML", type="primary"):
 if st.session_state.generated_yaml:
     st.code(st.session_state.generated_yaml, language="yaml")
 
+    file_name = "screenplay_demo.yaml" if use_demo else "screenplay_ai.yaml"
+
     st.download_button(
-        label="下载 screenplay_demo.yaml",
+        label=f"下载 {file_name}",
         data=st.session_state.generated_yaml.encode("utf-8"),
-        file_name="screenplay_demo.yaml",
+        file_name=file_name,
         mime="text/yaml",
     )

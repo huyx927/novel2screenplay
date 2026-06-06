@@ -8,3 +8,4 @@ outputs/
 .DS_Store
 *.egg-info/
 src/*.egg-info/
+debug_api.py

@@ -24,16 +24,11 @@ def convert_novel_text(
     text: str,
     title: str = "未命名改编项目",
     mode: str = "demo",
+    model: str | None = None,
+    base_url: str | None = None,
+    max_chars_per_chapter: int = 3500,
 ) -> ConversionResult:
-    """Convert raw novel text into screenplay data and YAML text.
-
-    Pipeline:
-    1. Split raw novel text into chapters.
-    2. Check that the input has at least 3 chapters.
-    3. Generate screenplay data.
-    4. Validate screenplay data against the YAML Schema.
-    5. Export validated data to YAML.
-    """
+    """Convert raw novel text into screenplay data and YAML text."""
     clean_title = title.strip() or "未命名改编项目"
     normalized_mode = mode.strip().lower()
 
@@ -46,7 +41,15 @@ def convert_novel_text(
             title=clean_title,
         )
     elif normalized_mode == "ai":
-        raise NotImplementedError("AI 模式将在下一阶段接入 OpenAI。")
+        from novel2screenplay.llm_openai import convert_with_openai
+
+        screenplay_data = convert_with_openai(
+            chapters=chapters,
+            title=clean_title,
+            model=model,
+            base_url=base_url,
+            max_chars_per_chapter=max_chars_per_chapter,
+        )
     else:
         raise ValueError("mode 只能是 'demo' 或 'ai'。")
 

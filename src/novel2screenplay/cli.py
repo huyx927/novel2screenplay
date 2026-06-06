@@ -27,7 +27,26 @@ def build_parser() -> argparse.ArgumentParser:
         "--mode",
         choices=["demo", "ai"],
         default="demo",
-        help="转换模式。当前阶段请使用 demo，AI 模式将在下一阶段接入。",
+        help="转换模式。demo 不调用 API，ai 会调用第三方 OpenAI-compatible API。",
+    )
+
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="第三方模型名。不填则读取 .env 中的 OPENAI_MODEL。",
+    )
+
+    parser.add_argument(
+        "--base-url",
+        default=None,
+        help="第三方 API Base URL。不填则读取 .env 中的 OPENAI_BASE_URL。",
+    )
+
+    parser.add_argument(
+        "--max-chars-per-chapter",
+        type=int,
+        default=3500,
+        help="AI 模式下每章最多发送的字符数，用于控制输入长度。",
     )
 
     parser.add_argument(
@@ -40,10 +59,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    """Run the command line converter.
-
-    Return 0 on success and 1 on failure.
-    """
+    """Run the command line converter."""
     parser = build_parser()
     args = parser.parse_args(argv)
 
@@ -57,6 +73,9 @@ def main(argv: list[str] | None = None) -> int:
             text=text,
             title=args.title,
             mode=args.mode,
+            model=args.model,
+            base_url=args.base_url,
+            max_chars_per_chapter=args.max_chars_per_chapter,
         )
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
