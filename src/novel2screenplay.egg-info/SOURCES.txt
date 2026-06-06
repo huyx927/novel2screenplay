@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-src/__init__.py
-src/novel2screenplay.egg-info/PKG-INFO
-src/novel2screenplay.egg-info/SOURCES.txt
-src/novel2screenplay.egg-info/dependency_links.txt
-src/novel2screenplay.egg-info/top_level.txt

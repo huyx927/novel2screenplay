@@ -1,0 +1,20 @@
+[project]
+name = "novel2screenplay"
+version = "0.1.0"
+description = "AI assisted tool that converts novel chapters into structured screenplay YAML."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.40.0",
+    "openai>=1.99.0",
+    "PyYAML>=6.0.2",
+    "python-dotenv>=1.0.1",
+    "jsonschema>=4.23.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

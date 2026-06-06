@@ -1,0 +1,6 @@
+streamlit>=1.40.0
+openai>=1.99.0
+PyYAML>=6.0.2
+python-dotenv>=1.0.1
+jsonschema>=4.23.0
+pytest>=8.0.0
