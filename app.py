@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import streamlit as st
 
-from novel2screenplay.chapter_splitter import split_chapters
+from novel2screenplay.chapter_splitter import require_min_chapters, split_chapters
+from novel2screenplay.demo_converter import build_demo_screenplay
+from novel2screenplay.schema import validate_screenplay
+from novel2screenplay.yaml_exporter import to_yaml
 
 
 SAMPLE_TEXT = """
@@ -22,6 +25,14 @@ st.set_page_config(page_title="Novel2Screenplay", page_icon="🎬", layout="wide
 st.title("🎬 Novel2Screenplay")
 st.write("把 3 个章节以上的小说文本转换为结构化剧本 YAML 初稿。")
 
+if "generated_yaml" not in st.session_state:
+    st.session_state.generated_yaml = None
+
+with st.sidebar:
+    st.header("项目设置")
+    project_title = st.text_input("项目标题", value="雾城来信")
+    st.caption("当前阶段使用演示模式，不调用 AI。")
+
 novel_text = st.text_area(
     "请粘贴小说文本",
     value=SAMPLE_TEXT,
@@ -36,9 +47,41 @@ st.info(f"当前识别到 {len(chapters)} 个章节。题目要求至少 3 个�
 if len(chapters) < 3:
     st.warning("章节数量不足。请至少输入 3 个章节。")
 else:
-    st.success("章节数量符合要求，可以进入后续剧本转换流程。")
+    st.success("章节数量符合要求，可以生成演示剧本 YAML。")
 
 for chapter in chapters:
     with st.expander(f"{chapter.number}. {chapter.title}"):
         preview = chapter.content[:500]
         st.write(preview if preview else "该章节正文为空。")
+
+st.divider()
+
+st.subheader("生成剧本 YAML")
+
+if st.button("生成演示剧本 YAML", type="primary"):
+    try:
+        require_min_chapters(chapters, minimum=3)
+
+        screenplay_data = build_demo_screenplay(
+            chapters=chapters,
+            title=project_title,
+        )
+
+        validate_screenplay(screenplay_data)
+
+        st.session_state.generated_yaml = to_yaml(screenplay_data)
+
+        st.success("演示剧本 YAML 生成成功。")
+    except Exception as exc:
+        st.session_state.generated_yaml = None
+        st.error(f"生成失败：{exc}")
+
+if st.session_state.generated_yaml:
+    st.code(st.session_state.generated_yaml, language="yaml")
+
+    st.download_button(
+        label="下载 screenplay_demo.yaml",
+        data=st.session_state.generated_yaml.encode("utf-8"),
+        file_name="screenplay_demo.yaml",
+        mime="text/yaml",
+    )
