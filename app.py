@@ -2,10 +2,8 @@ from __future__ import annotations
 
 import streamlit as st
 
-from novel2screenplay.chapter_splitter import require_min_chapters, split_chapters
-from novel2screenplay.demo_converter import build_demo_screenplay
-from novel2screenplay.schema import validate_screenplay
-from novel2screenplay.yaml_exporter import to_yaml
+from novel2screenplay.chapter_splitter import split_chapters
+from novel2screenplay.converter import convert_novel_text
 
 
 SAMPLE_TEXT = """
@@ -60,18 +58,16 @@ st.subheader("生成剧本 YAML")
 
 if st.button("生成演示剧本 YAML", type="primary"):
     try:
-        require_min_chapters(chapters, minimum=3)
-
-        screenplay_data = build_demo_screenplay(
-            chapters=chapters,
+        result = convert_novel_text(
+            text=novel_text,
             title=project_title,
+            mode="demo",
         )
 
-        validate_screenplay(screenplay_data)
-
-        st.session_state.generated_yaml = to_yaml(screenplay_data)
-
+        st.session_state.generated_yaml = result.yaml_text
         st.success("演示剧本 YAML 生成成功。")
+        st.caption(f"已识别章节数：{len(result.chapters)}")
+
     except Exception as exc:
         st.session_state.generated_yaml = None
         st.error(f"生成失败：{exc}")
