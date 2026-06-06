@@ -1,0 +1,125 @@
+schema_version: '1.0'
+project:
+  title: 手稿改编计划
+  logline: 主角被一个意外事件卷入核心矛盾，并被迫面对隐藏的真相。
+  genre: 剧情 / 悬疑
+  target_format: web_drama
+  source:
+    chapter_count: 3
+    chapter_titles:
+    - 第1章 新编辑的第一天
+    - 第2章 被遗忘的手稿
+    - 第3章 第一次改编
+characters:
+- id: CHAR_001
+  name: 主角
+  role: protagonist
+  description: 承载主要行动线的人物，负责推动观众进入故事核心矛盾。
+  arc: 从被动卷入事件，到主动做出选择并追寻真相。
+- id: CHAR_002
+  name: 对手或同伴
+  role: supporting
+  description: 推动冲突、提供信息或制造阻碍的人物。
+  arc: 与主角的目标形成张力，迫使主角改变行动策略。
+- id: CHAR_003
+  name: 隐藏真相相关人物
+  role: antagonist
+  description: 与故事秘密或核心冲突有关的人物。
+  arc: 从缺席或隐藏，到逐渐显露其对事件的影响。
+locations:
+- id: LOC_001
+  name: 第1章 新编辑的第一天的核心地点
+  description: 根据《第1章 新编辑的第一天》提炼出的主要行动空间。
+- id: LOC_002
+  name: 第2章 被遗忘的手稿的核心地点
+  description: 根据《第2章 被遗忘的手稿》提炼出的主要行动空间。
+- id: LOC_003
+  name: 第3章 第一次改编的核心地点
+  description: 根据《第3章 第一次改编》提炼出的主要行动空间。
+acts:
+- act_number: 1
+  title: 第一幕：事件触发与悬念建立
+  purpose: 建立人物处境、核心悬念和主角的初始行动方向。
+  scenes:
+  - scene_id: S001
+    title: 场景1：第1章 新编辑的第一天
+    source_chapters:
+    - 1
+    heading:
+      int_ext: INT/EXT
+      location: 第1章 新编辑的第一天的核心地点
+      time: 日
+    synopsis: 本场根据《第1章 新编辑的第一天》改编：林澈来到一家杂志社实习。主编交给他一个任务，让他整理一批旧稿件，并从中找出适合改编的故事。林澈原本只想完成工作，却在资料室里发现了一份被单独封存的手稿。
+    purpose: 将小说叙述转化为具有明确目标、冲突和推进作用的戏剧场景。
+    beats:
+    - 建立场景氛围和人物当前目标
+    - 让人物发现线索、遭遇阻碍或做出选择
+    - 以新的问题或行动方向推动下一场
+    action: 镜头进入《第1章 新编辑的第一天》的核心情境。人物在环境压力下行动，关键细节被转化为可拍摄的画面。
+    dialogue:
+    - character: 主角
+      parenthetical: 压低声音
+      line: 这件事不能再拖下去了。
+    - character: 对手或同伴
+      parenthetical: 停顿
+      line: 你确定要继续查下去吗？
+    transition: 'CUT TO:'
+    revision_notes:
+    - 演示模式生成的是结构化初稿，后续可用 AI 模式细化人物动机、动作和对白。
+    - 建议作者根据原小说补充更具体的视觉细节。
+  - scene_id: S002
+    title: 场景2：第2章 被遗忘的手稿
+    source_chapters:
+    - 2
+    heading:
+      int_ext: INT/EXT
+      location: 第2章 被遗忘的手稿的核心地点
+      time: 日
+    synopsis: 本场根据《第2章 被遗忘的手稿》改编：手稿没有署名，纸页边缘已经泛黄。里面记录着一个小镇剧团准备公演的过程：演员之间的争执、导演对舞台效果的坚持，以及一个年轻编剧第一次修改剧本的紧张。林澈越读越觉得，这份手稿像是在等待某个人重新发现它。
+    purpose: 将小说叙述转化为具有明确目标、冲突和推进作用的戏剧场景。
+    beats:
+    - 建立场景氛围和人物当前目标
+    - 让人物发现线索、遭遇阻碍或做出选择
+    - 以新的问题或行动方向推动下一场
+    action: 镜头进入《第2章 被遗忘的手稿》的核心情境。人物在环境压力下行动，关键细节被转化为可拍摄的画面。
+    dialogue:
+    - character: 主角
+      parenthetical: 压低声音
+      line: 这件事不能再拖下去了。
+    - character: 对手或同伴
+      parenthetical: 停顿
+      line: 你确定要继续查下去吗？
+    transition: 'CUT TO:'
+    revision_notes:
+    - 演示模式生成的是结构化初稿，后续可用 AI 模式细化人物动机、动作和对白。
+    - 建议作者根据原小说补充更具体的视觉细节。
+  - scene_id: S003
+    title: 场景3：第3章 第一次改编
+    source_chapters:
+    - 3
+    heading:
+      int_ext: INT/EXT
+      location: 第3章 第一次改编的核心地点
+      time: 日
+    synopsis: 本场根据《第3章 第一次改编》改编：林澈尝试把手稿改成短剧。他发现小说里的叙述不能直接搬上舞台，必须变成动作、对白和场景调度。经过几次失败，他终于写出了第一版剧本，也开始理解改编不是复制原文，而是重新组织故事的情绪和冲突。
+    purpose: 将小说叙述转化为具有明确目标、冲突和推进作用的戏剧场景。
+    beats:
+    - 建立场景氛围和人物当前目标
+    - 让人物发现线索、遭遇阻碍或做出选择
+    - 以新的问题或行动方向推动下一场
+    action: 镜头进入《第3章 第一次改编》的核心情境。人物在环境压力下行动，关键细节被转化为可拍摄的画面。
+    dialogue:
+    - character: 主角
+      parenthetical: 压低声音
+      line: 这件事不能再拖下去了。
+    - character: 对手或同伴
+      parenthetical: 停顿
+      line: 你确定要继续查下去吗？
+    transition: 'CUT TO:'
+    revision_notes:
+    - 演示模式生成的是结构化初稿，后续可用 AI 模式细化人物动机、动作和对白。
+    - 建议作者根据原小说补充更具体的视觉细节。
+adaptation_notes:
+- 演示模式采用“一章对应一场”的稳定策略，便于验证流程和展示结果。
+- 正式 AI 模式可以把一个章节拆成多场，也可以把多个章节合并成一场。
+- 剧本改编重点不是复述小说，而是把叙述转化为动作、对白、冲突和节拍。
