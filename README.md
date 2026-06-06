@@ -36,3 +36,7 @@ python -m novel2screenplay.cli data/sample_novel.txt --title 雾城来信 --mode
 网页运行：
 python -m streamlit run app.py
 打开页面后，取消勾选“演示模式”，即可使用 AI 模式。
+
+## 文档
+
+- YAML Schema 设计说明：`docs/YAML_SCHEMA.md`
